@@ -1,6 +1,7 @@
 package uniandes.lym.robot.control;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 
 import javax.swing.SwingUtilities;
 
@@ -12,12 +13,38 @@ import uniandes.lym.robot.kernel.*;
  * Receives commands and relays them to the Robot. 
  */
 
-public class Interpreter   {
+public class Interpreter   
+{
+	
+	/**
+	 * HashMap that contains the variables
+	 */
+	private HashMap<String, Integer> hashVariables;
 	
 	/**
 	 * Robot's world
 	 */
-	private RobotWorldDec world;   
+	private RobotWorldDec world;  
+	
+	// --------------------------------------------------------------------------
+	// Constants
+	// --------------------------------------------------------------------------
+	
+	/** 
+	 * Constants to model the directions	
+	 */
+	public static final int NORTH = 0;
+	public static final int SOUTH = 1;
+	public static final int EAST = 2;
+	public static final int WEST = 3;
+
+	public static final String RIGHT = "RIGHT";
+	public static final String LEFT = "LEFT";
+	public static final String AROUND = "AROUND";
+	public static final String FRONT = "FRONT";
+	public static final String BACK = "BACK";
+	public static final String BALLOONS = "BALLOONS";
+	public static final String CHIPS = "CHIPS";
 	
 	
 	public Interpreter()
@@ -110,7 +137,22 @@ public class Interpreter   {
  }
 	    return output.toString();
 	    }
-
+	
+	
+	
+	// --------------------------------------------------------------------------
+	// Proyect methods
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * 
+	 * @param name
+	 * @param n
+	 */
+	public void assignTo(String name, int n)
+	{
+		hashVariables.replace(name, n);
+	}
 
 	
 }
