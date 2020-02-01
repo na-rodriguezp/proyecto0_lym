@@ -89,7 +89,7 @@ public class Interpreter
 
 	public String process(String input) throws Error
 	{   
-		
+
 
 		StringBuffer output=new StringBuffer("SYSTEM RESPONSE: -->\n");	
 
@@ -184,7 +184,7 @@ public class Interpreter
 			world.turnRight();
 		}
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -264,7 +264,7 @@ public class Interpreter
 			}
 		}
 	}
-	
+
 	/**
 	 * Metodo corresponde a poner un numero de globos o de papas
 	 * @param n corresponde a la cantidad de elementos
@@ -282,7 +282,7 @@ public class Interpreter
 		}
 		catch(Exception e){
 			int num= hashVariables.get(n);
-			
+
 			if(ballonsChips== BALLOONS){
 				world.putBalloons(num);
 			}
@@ -291,11 +291,11 @@ public class Interpreter
 			}
 		}
 	}
-/**
- * Metodo encargado de recoger un cierto numero de globos o papas
- * @param n corresponde a la cantidad de elementos
- * @param ballonsChips puede poder elementos Ballons o elementos chips 
- */
+	/**
+	 * Metodo encargado de recoger un cierto numero de globos o papas
+	 * @param n corresponde a la cantidad de elementos
+	 * @param ballonsChips puede poder elementos Ballons o elementos chips 
+	 */
 	public void pickNumberOf (String n, String ballonsChips){
 		try{
 			int number = Integer.parseInt(n);
@@ -308,7 +308,7 @@ public class Interpreter
 		}
 		catch(Exception e){
 			int num= hashVariables.get(n);
-			
+
 			if(ballonsChips== BALLOONS){
 				world.grabBalloons(num);
 			}
@@ -317,28 +317,48 @@ public class Interpreter
 			}
 		}
 	}
-	
+	/**
+	 * Metodo encargado de mover el robot mirando a cierto punto sin cambiar su mirada incial	
+	 * @param n cuanto se mueve 
+	 * @param direction si se mueve hacia el FRONT, BACK. RIGHT, LEFT
+	 */
 	public void moveToThe(String n, String direction){
 		try{
+
 			int number = Integer.parseInt(n);
-			if(direction== FRONT ){
-				world.;
+			if(!world.estaArriba() && direction== FRONT ){
+				world.moveVertically(number);
 			}
-			else if(direction== BACK){
-				world.pickChips(number);
+			else if(!world.estaAbajo() && direction== BACK){
+				world.moveVertically(-number);
+			}
+			else if(!world.estaDerecha() && direction== RIGHT){
+				world.moveHorizontally(number);
+			}
+			else if(!world.estaIzquierda() && direction== LEFT){
+				world.moveHorizontally(-number);
 			}
 		}
 		catch(Exception e){
-			int num= hashVariables.get(n);
-			
-			if(direction == RIGHT){
-				world.grabBalloons(num);
+			int num=hashVariables.get(n);
+			if(!world.estaArriba() && direction== FRONT ){
+				world.moveVertically(num);
 			}
-			else if(direction== LEFT){
-				world.pickChips(num);
+			else if(!world.estaAbajo() && direction== BACK){
+				world.moveVertically(-num);
+			}
+			else if(!world.estaDerecha() && direction== RIGHT){
+				world.moveHorizontally(num);
+			}
+			else if(!world.estaIzquierda() && direction== LEFT){
+				world.moveHorizontally(-num);
 			}
 		}
 	}
-	
-	
+
+	public void moveInDir(String n, int O){
+		face(O);
+		move(n);
+	}
+
 }
