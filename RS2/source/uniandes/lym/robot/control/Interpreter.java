@@ -265,6 +265,80 @@ public class Interpreter
 		}
 	}
 	
+	/**
+	 * Metodo corresponde a poner un numero de globos o de papas
+	 * @param n corresponde a la cantidad de elementos
+	 * @param ballonsChips puede poner elemento Ballons o elemento chips
+	 */
+	public void putNumberOf (String n, String ballonsChips){
+		try{
+			int number = Integer.parseInt(n);
+			if(ballonsChips== BALLOONS){
+				world.putBalloons(number);
+			}
+			else if(ballonsChips== CHIPS){
+				world.putChips(number);
+			}
+		}
+		catch(Exception e){
+			int num= hashVariables.get(n);
+			
+			if(ballonsChips== BALLOONS){
+				world.putBalloons(num);
+			}
+			else if(ballonsChips== CHIPS){
+				world.putChips(num);
+			}
+		}
+	}
+/**
+ * Metodo encargado de recoger un cierto numero de globos o papas
+ * @param n corresponde a la cantidad de elementos
+ * @param ballonsChips puede poder elementos Ballons o elementos chips 
+ */
+	public void pickNumberOf (String n, String ballonsChips){
+		try{
+			int number = Integer.parseInt(n);
+			if(ballonsChips== BALLOONS){
+				world.grabBalloons(number);
+			}
+			else if(ballonsChips== CHIPS){
+				world.pickChips(number);
+			}
+		}
+		catch(Exception e){
+			int num= hashVariables.get(n);
+			
+			if(ballonsChips== BALLOONS){
+				world.grabBalloons(num);
+			}
+			else if(ballonsChips== CHIPS){
+				world.pickChips(num);
+			}
+		}
+	}
+	
+	public void moveToThe(String n, String direction){
+		try{
+			int number = Integer.parseInt(n);
+			if(direction== FRONT ){
+				world.;
+			}
+			else if(direction== BACK){
+				world.pickChips(number);
+			}
+		}
+		catch(Exception e){
+			int num= hashVariables.get(n);
+			
+			if(direction == RIGHT){
+				world.grabBalloons(num);
+			}
+			else if(direction== LEFT){
+				world.pickChips(num);
+			}
+		}
+	}
 	
 	
 }
