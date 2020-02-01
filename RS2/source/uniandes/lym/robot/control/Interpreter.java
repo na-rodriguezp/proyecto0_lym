@@ -171,53 +171,56 @@ public class Interpreter
 				}
 			}
 		}
-		//
-		//		int i;
-		//		int n;
-		//		boolean ok = true;
-		//		n= input.length();
-		//
-		//		i  = 0;
-		//		try	    {
-		//			while (i < n &&  ok) {
-		//				switch (input.charAt(i)) {
-		//				case 'M': world.moveForward(1); output.append("move \n");break;
-		//				case 'R': world.turnRight(); output.append("turnRignt \n");break;
-		//				case 'C': world.putChips(1); output.append("putChip \n");break;
-		//				case 'B': world.putBalloons(1); output.append("putBalloon \n");break;
-		//				case  'c': world.pickChips(1); output.append("getChip \n");break;
-		//				case  'b': world.grabBalloons(1); output.append("getBalloon \n");break;
-		//				default: output.append(" Unrecognized command:  "+ input.charAt(i)); ok=false;
-		//				}
-		//
-		//				if (ok) {
-		//					if  (i+1 == n)  { output.append("expected ';' ; found end of input; ");  ok = false ;}
-		//					else if (input.charAt(i+1) == ';') 
-		//					{
-		//						i= i+2;
-		//						try {
-		//							Thread.sleep(1000);
-		//						} catch (InterruptedException e) {
-		//							System.err.format("IOException: %s%n", e);
-		//						}
-		//
-		//					}
-		//					else {output.append(" Expecting ;  found: "+ input.charAt(i+1)); ok=false;
-		//					}
-		//				}
-		//
-		//
-		//			}
-		//
-		//		}
-		//		catch (Error e ){
-		//			output.append("Error!!!  "+e.getMessage());
-		//
-		//		}
+		
 		else
 		{
 			output.append(" Unrecognized command:  "+ instructions[0]);
 		}
+		
+		
+		int i;
+				int n;
+				boolean ok = true;
+				n= input.length();
+		
+				i  = 0;
+				try	    {
+					while (i < n &&  ok) {
+						switch (input.charAt(i)) {
+						case 'M': world.moveForward(1); output.append("move \n");break;
+						case 'R': world.turnRight(); output.append("turnRignt \n");break;
+						case 'C': world.putChips(1); output.append("putChip \n");break;
+						case 'B': world.putBalloons(1); output.append("putBalloon \n");break;
+						case  'c': world.pickChips(1); output.append("getChip \n");break;
+						case  'b': world.grabBalloons(1); output.append("getBalloon \n");break;
+						default: output.append(" Unrecognized command:  "+ input.charAt(i)); ok=false;
+						}
+		
+						if (ok) {
+							if  (i+1 == n)  { output.append("expected ';' ; found end of input; ");  ok = false ;}
+							else if (input.charAt(i+1) == ';') 
+							{
+								i= i+2;
+								try {
+									Thread.sleep(1000);
+								} catch (InterruptedException e) {
+									System.err.format("IOException: %s%n", e);
+								}
+		
+							}
+							else {output.append(" Expecting ;  found: "+ input.charAt(i+1)); ok=false;
+							}
+						}
+		
+		
+					}
+		
+				}
+				catch (Error e ){
+					output.append("Error!!!  "+e.getMessage());
+		
+				}
+		
 		return output.toString();
 	}
 
