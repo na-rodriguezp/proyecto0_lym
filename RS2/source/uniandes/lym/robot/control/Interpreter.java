@@ -89,51 +89,134 @@ public class Interpreter
 
 	public String process(String input) throws Error
 	{   
-
-
 		StringBuffer output=new StringBuffer("SYSTEM RESPONSE: -->\n");	
-
-		int i;
-		int n;
-		boolean ok = true;
-		n= input.length();
-
-		i  = 0;
-		try	    {
-			while (i < n &&  ok) {
-				switch (input.charAt(i)) {
-				case 'M': world.moveForward(1); output.append("move \n");break;
-				case 'R': world.turnRight(); output.append("turnRignt \n");break;
-				case 'C': world.putChips(1); output.append("putChip \n");break;
-				case 'B': world.putBalloons(1); output.append("putBalloon \n");break;
-				case  'c': world.pickChips(1); output.append("getChip \n");break;
-				case  'b': world.grabBalloons(1); output.append("getBalloon \n");break;
-				default: output.append(" Unrecognized command:  "+ input.charAt(i)); ok=false;
-				}
-
-				if (ok) {
-					if  (i+1 == n)  { output.append("expected ';' ; found end of input; ");  ok = false ;}
-					else if (input.charAt(i+1) == ';') 
+		String[] instructions = input.split(" ");
+		if( instructions[0].equals("ROBOT_R") )
+		{
+			if( instructions[1].equals("VARS") )
+			{
+				String[] variables = instructions[2].split(",");
+				for( String actual : variables )
+					hashVariables.put(actual, null);
+			}
+			if( instructions[3].equals("BEGIN") )
+			{
+				String[] commands = instructions[4].split(";");
+				for( String actualInst: commands )
+				{
+					if( actualInst.startsWith("assign") )
 					{
-						i= i+2;
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							System.err.format("IOException: %s%n", e);
+						String inParentheses =actualInst.substring(7, actualInst.length()-1);
+						String[] values =inParentheses.split(",");
+						String name = values[0];
+						int number = Integer.parseInt(values[1]);
+						assignTo(name,number);
+					}
+					else if( actualInst.startsWith("move") )
+					{
+						String inParentheses1 =actualInst.substring(5, actualInst.length()-1);
+						if( inParentheses1.length() == 1 )
+						{
+							move(inParentheses1);
+						}
+						else if(inParentheses1.length() ==2 )
+						{
+							String[] values1 =inParentheses1.split(",");
+							String name1 =values1[0];
+							
+							if( isNumeric(values1[1]) )
+							{
+								int num1 =Integer.parseInt(values1[1]);
+								moveInDir(name1,num1);
+							}
+							else if( values1[1].equals(FRONT) || values1[1].equals(RIGHT) || values1[1].equals(LEFT) || values1[1].equals(BACK) )
+							{
+								String var1 =values1[1];
+								moveToThe(name1,var1);
+							}
+								
 						}
 
 					}
-					else {output.append(" Expecting ;  found: "+ input.charAt(i+1)); ok=false;
+					else if( actualInst.startsWith("turn") )
+					{
+						String inParentheses2 =actualInst.substring(5, actualInst.length()-1);
+						turn(inParentheses2);
 					}
+					else if( actualInst.startsWith("face") )
+					{
+						String inParentheses3 =actualInst.substring(5, actualInst.length()-1);
+						int num2 =Integer.parseInt(inParentheses3);
+						face(num2);
+					}
+					else if( actualInst.startsWith("put") )
+					{
+						String inParentheses4 =actualInst.substring(4, actualInst.length()-1);
+						String[] values2 = inParentheses4.split(",");
+						String name2 =values2[0];
+						String name3 =values2[1];
+						
+						putNumberOf(name2,name3);
+					}
+					else if( actualInst.startsWith("pick") )
+					{
+						String inParentheses5 =actualInst.substring(5, actualInst.length()-1);
+						String[] values3 = inParentheses5.split(",");
+						String name4 =values3[0];
+						String name5 =values3[1];
+						
+						pickNumberOf(name4, name5);
+					}
+						
 				}
-
-
 			}
-
 		}
-		catch (Error e ){
-			output.append("Error!!!  "+e.getMessage());
-
+		//
+		//		int i;
+		//		int n;
+		//		boolean ok = true;
+		//		n= input.length();
+		//
+		//		i  = 0;
+		//		try	    {
+		//			while (i < n &&  ok) {
+		//				switch (input.charAt(i)) {
+		//				case 'M': world.moveForward(1); output.append("move \n");break;
+		//				case 'R': world.turnRight(); output.append("turnRignt \n");break;
+		//				case 'C': world.putChips(1); output.append("putChip \n");break;
+		//				case 'B': world.putBalloons(1); output.append("putBalloon \n");break;
+		//				case  'c': world.pickChips(1); output.append("getChip \n");break;
+		//				case  'b': world.grabBalloons(1); output.append("getBalloon \n");break;
+		//				default: output.append(" Unrecognized command:  "+ input.charAt(i)); ok=false;
+		//				}
+		//
+		//				if (ok) {
+		//					if  (i+1 == n)  { output.append("expected ';' ; found end of input; ");  ok = false ;}
+		//					else if (input.charAt(i+1) == ';') 
+		//					{
+		//						i= i+2;
+		//						try {
+		//							Thread.sleep(1000);
+		//						} catch (InterruptedException e) {
+		//							System.err.format("IOException: %s%n", e);
+		//						}
+		//
+		//					}
+		//					else {output.append(" Expecting ;  found: "+ input.charAt(i+1)); ok=false;
+		//					}
+		//				}
+		//
+		//
+		//			}
+		//
+		//		}
+		//		catch (Error e ){
+		//			output.append("Error!!!  "+e.getMessage());
+		//
+		//		}
+		else
+		{
+			output.append(" Unrecognized command:  "+ instructions[0]);
 		}
 		return output.toString();
 	}
@@ -141,7 +224,7 @@ public class Interpreter
 
 
 	// --------------------------------------------------------------------------
-	// Proyect methods
+	// Project methods
 	// --------------------------------------------------------------------------
 
 	/**
@@ -359,6 +442,24 @@ public class Interpreter
 	public void moveInDir(String n, int O){
 		face(O);
 		move(n);
+	}
+
+	/**
+	 * Checks if the parameter string is a number or not
+	 * @param string
+	 * @return true if the string is a number; false if it is not.
+	 */
+	private boolean isNumeric(String string)
+	{
+		try 
+		{
+			Integer.parseInt(string);
+			return true;
+		} 
+		catch (NumberFormatException nfe)
+		{
+			return false;
+		}
 	}
 
 }
