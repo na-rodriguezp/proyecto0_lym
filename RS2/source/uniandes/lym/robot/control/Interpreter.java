@@ -153,6 +153,23 @@ public class Interpreter
 	{
 		hashVariables.replace(name, n);
 	}
+	
+	/**
+	 * 
+	 */
+	public void move(String n)
+	{
+		int steps = Integer.parseInt(n);
+		world.moveForward(steps);
+	}
+	
+	/**
+	 * 
+	 */
+	public void turn()
+	{
+		
+	}
 
 	
 }
