@@ -49,6 +49,7 @@ public class Interpreter
 
 	public Interpreter()
 	{
+		hashVariables = new HashMap<String, Integer>();
 	}
 
 
@@ -61,6 +62,7 @@ public class Interpreter
 	public Interpreter(RobotWorld mundo)
 	{
 		this.world =  (RobotWorldDec) mundo;
+		hashVariables = new HashMap<String, Integer>();
 
 	}
 
@@ -123,7 +125,7 @@ public class Interpreter
 						{
 							String[] values1 =inParentheses1.split(",");
 							String name1 =values1[0];
-							
+
 							if( isNumeric(values1[1]) )
 							{
 								int num1 =Integer.parseInt(values1[1]);
@@ -134,7 +136,7 @@ public class Interpreter
 								String var1 =values1[1];
 								moveToThe(name1,var1);
 							}
-								
+
 						}
 
 					}
@@ -155,7 +157,7 @@ public class Interpreter
 						String[] values2 = inParentheses4.split(",");
 						String name2 =values2[0];
 						String name3 =values2[1];
-						
+
 						putNumberOf(name2,name3);
 					}
 					else if( actualInst.startsWith("pick") )
@@ -164,63 +166,20 @@ public class Interpreter
 						String[] values3 = inParentheses5.split(",");
 						String name4 =values3[0];
 						String name5 =values3[1];
-						
+
 						pickNumberOf(name4, name5);
 					}
-						
+
 				}
 			}
 		}
-		
+
 		else
 		{
 			output.append(" Unrecognized command:  "+ instructions[0]);
 		}
-		
-		
-		int i;
-				int n;
-				boolean ok = true;
-				n= input.length();
-		
-				i  = 0;
-				try	    {
-					while (i < n &&  ok) {
-						switch (input.charAt(i)) {
-						case 'M': world.moveForward(1); output.append("move \n");break;
-						case 'R': world.turnRight(); output.append("turnRignt \n");break;
-						case 'C': world.putChips(1); output.append("putChip \n");break;
-						case 'B': world.putBalloons(1); output.append("putBalloon \n");break;
-						case  'c': world.pickChips(1); output.append("getChip \n");break;
-						case  'b': world.grabBalloons(1); output.append("getBalloon \n");break;
-						default: output.append(" Unrecognized command:  "+ input.charAt(i)); ok=false;
-						}
-		
-						if (ok) {
-							if  (i+1 == n)  { output.append("expected ';' ; found end of input; ");  ok = false ;}
-							else if (input.charAt(i+1) == ';') 
-							{
-								i= i+2;
-								try {
-									Thread.sleep(1000);
-								} catch (InterruptedException e) {
-									System.err.format("IOException: %s%n", e);
-								}
-		
-							}
-							else {output.append(" Expecting ;  found: "+ input.charAt(i+1)); ok=false;
-							}
-						}
-		
-		
-					}
-		
-				}
-				catch (Error e ){
-					output.append("Error!!!  "+e.getMessage());
-		
-				}
-		
+
+
 		return output.toString();
 	}
 
@@ -245,9 +204,19 @@ public class Interpreter
 	 */
 	public void move(String n)
 	{
-		int steps = Integer.parseInt(n);
-		world.moveForward(steps);
+		int steps =0;
+		try
+		{
+			steps = Integer.parseInt(n);
+			world.moveForward(steps);
+		}
+		catch(Exception e)
+		{
+			steps = hashVariables.get(n);
+			world.moveForward(steps);
+		}
 	}
+
 
 	/**
 	 * 
