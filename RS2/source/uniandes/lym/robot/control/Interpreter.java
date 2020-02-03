@@ -92,94 +92,97 @@ public class Interpreter
 	public String process(String input) throws Error
 	{   
 		StringBuffer output=new StringBuffer("SYSTEM RESPONSE: -->\n");	
-		String[] instructions = input.split(" ");
-		if( instructions[0].equals("ROBOT_R") )
-		{
-			if( instructions[1].equals("VARS") )
-			{
-				String[] variables = instructions[2].split(",");
-				for( String actual : variables )
-					hashVariables.put(actual, null);
-			}
-			if( instructions[3].equals("BEGIN") )
-			{
-				String[] commands = instructions[4].split(";");
-				for( String actualInst: commands )
-				{
-					if( actualInst.startsWith("assign") )
-					{
-						String inParentheses =actualInst.substring(7, actualInst.length()-1);
-						String[] values =inParentheses.split(",");
-						String name = values[0];
-						int number = Integer.parseInt(values[1]);
-						assignTo(name,number);
-					}
-					else if( actualInst.startsWith("move") )
-					{
-						String inParentheses1 =actualInst.substring(5, actualInst.length()-1);
-						if( inParentheses1.length() == 1 )
-						{
-							move(inParentheses1);
-						}
-						else if(inParentheses1.length() ==2 )
-						{
-							String[] values1 =inParentheses1.split(",");
-							String name1 =values1[0];
-
-							if( isNumeric(values1[1]) )
-							{
-								int num1 =Integer.parseInt(values1[1]);
-								moveInDir(name1,num1);
-							}
-							else if( values1[1].equals(FRONT) || values1[1].equals(RIGHT) || values1[1].equals(LEFT) || values1[1].equals(BACK) )
-							{
-								String var1 =values1[1];
-								moveToThe(name1,var1);
-							}
-
-						}
-
-					}
-					else if( actualInst.startsWith("turn") )
-					{
-						String inParentheses2 =actualInst.substring(5, actualInst.length()-1);
-						turn(inParentheses2);
-					}
-					else if( actualInst.startsWith("face") )
-					{
-						String inParentheses3 =actualInst.substring(5, actualInst.length()-1);
-						int num2 =Integer.parseInt(inParentheses3);
-						face(num2);
-					}
-					else if( actualInst.startsWith("put") )
-					{
-						String inParentheses4 =actualInst.substring(4, actualInst.length()-1);
-						String[] values2 = inParentheses4.split(",");
-						String name2 =values2[0];
-						String name3 =values2[1];
-
-						putNumberOf(name2,name3);
-					}
-					else if( actualInst.startsWith("pick") )
-					{
-						String inParentheses5 =actualInst.substring(5, actualInst.length()-1);
-						String[] values3 = inParentheses5.split(",");
-						String name4 =values3[0];
-						String name5 =values3[1];
-
-						pickNumberOf(name4, name5);
-					}
-
-				}
-			}
-		}
-
-		else
-		{
-			output.append(" Unrecognized command:  "+ instructions[0]);
-		}
-
-
+//		
+//		String[] instructions = input.split(" ");
+//		
+//		if( instructions[0].equals("ROBOT_R") )
+//		{
+//			if( instructions[1].equals("VARS") )
+//			{
+//				String[] variables = instructions[2].split(",");
+//				for( String actual : variables )
+//					hashVariables.put(actual, null);
+//			}
+//			
+//			if( instructions[3].equals("BEGIN") )
+//			{
+//				String[] commands = instructions[4].split(";");
+//				for( String actualInst: commands )
+//				{
+//					if( actualInst.startsWith("assign") )
+//					{
+//						String inParentheses =actualInst.substring(7, actualInst.length()-1);
+//						String[] values =inParentheses.split(",");
+//						String name = values[0];
+//						int number = Integer.parseInt(values[1]);
+//						assignTo(name,number);
+//					}
+//					else if( actualInst.startsWith("move") )
+//					{
+//						String inParentheses1 =actualInst.substring(5, actualInst.length()-1);
+//						if( inParentheses1.length() == 1 )
+//						{
+//							move(inParentheses1);
+//						}
+//						else if(inParentheses1.length() ==2 )
+//						{
+//							String[] values1 =inParentheses1.split(",");
+//							String name1 =values1[0];
+//
+//							if( isNumeric(values1[1]) )
+//							{
+//								int num1 =Integer.parseInt(values1[1]);
+//								moveInDir(name1,num1);
+//							}
+//							else if( values1[1].equals(FRONT) || values1[1].equals(RIGHT) || values1[1].equals(LEFT) || values1[1].equals(BACK) )
+//							{
+//								String var1 =values1[1];
+//								moveToThe(name1,var1);
+//							}
+//
+//						}
+//
+//					}
+//					else if( actualInst.startsWith("turn") )
+//					{
+//						String inParentheses2 =actualInst.substring(5, actualInst.length()-1);
+//						turn(inParentheses2);
+//					}
+//					else if( actualInst.startsWith("face") )
+//					{
+//						String inParentheses3 =actualInst.substring(5, actualInst.length()-1);
+//						int num2 =Integer.parseInt(inParentheses3);
+//						face(num2);
+//					}
+//					else if( actualInst.startsWith("put") )
+//					{
+//						String inParentheses4 =actualInst.substring(4, actualInst.length()-1);
+//						String[] values2 = inParentheses4.split(",");
+//						String name2 =values2[0];
+//						String name3 =values2[1];
+//
+//						putNumberOf(name2,name3);
+//					}
+//					else if( actualInst.startsWith("pick") )
+//					{
+//						String inParentheses5 =actualInst.substring(5, actualInst.length()-1);
+//						String[] values3 = inParentheses5.split(",");
+//						String name4 =values3[0];
+//						String name5 =values3[1];
+//
+//						pickNumberOf(name4, name5);
+//					}
+//
+//				}
+//			}
+//		}
+//
+//		else
+//		{
+//			output.append(" Unrecognized command:  "+ instructions[0]);
+//		}
+//
+//
 		return output.toString();
 	}
 
@@ -325,24 +328,34 @@ public class Interpreter
 	 * @param n corresponde a la cantidad de elementos
 	 * @param ballonsChips puede poner elemento Ballons o elemento chips
 	 */
-	public void putNumberOf (String n, String ballonsChips){
-		try{
-			int number = Integer.parseInt(n);
-			if(ballonsChips== BALLOONS){
+	public void putNumberOf (String n, String ballonsChips)
+	{
+		
+		int number;
+		try
+		{
+			
+			if(ballonsChips== BALLOONS)
+			{
+				number = Integer.parseInt(n);
 				world.putBalloons(number);
 			}
-			else if(ballonsChips== CHIPS){
+			else if(ballonsChips== CHIPS)
+			{
+				number = Integer.parseInt(n);
 				world.putChips(number);
 			}
 		}
 		catch(Exception e){
-			int num= hashVariables.get(n);
+			
 
 			if(ballonsChips== BALLOONS){
-				world.putBalloons(num);
+				number= hashVariables.get(n);
+				world.putBalloons(number);
 			}
 			else if(ballonsChips== CHIPS){
-				world.putChips(num);
+				number= hashVariables.get(n);
+				world.putChips(number);
 			}
 		}
 	}
@@ -352,23 +365,32 @@ public class Interpreter
 	 * @param ballonsChips puede poder elementos Ballons o elementos chips 
 	 */
 	public void pickNumberOf (String n, String ballonsChips){
-		try{
-			int number = Integer.parseInt(n);
-			if(ballonsChips== BALLOONS){
+		
+		int number;
+		try
+		{
+			if(ballonsChips== BALLOONS)
+			{
+				number = Integer.parseInt(n);
 				world.grabBalloons(number);
 			}
-			else if(ballonsChips== CHIPS){
+			else if(ballonsChips== CHIPS)
+			{
+				number = Integer.parseInt(n);
 				world.pickChips(number);
 			}
 		}
-		catch(Exception e){
-			int num= hashVariables.get(n);
-
-			if(ballonsChips== BALLOONS){
-				world.grabBalloons(num);
+		catch(Exception e)
+		{
+			if(ballonsChips== BALLOONS)
+			{
+				number= hashVariables.get(n);
+				world.grabBalloons(number);
 			}
-			else if(ballonsChips== CHIPS){
-				world.pickChips(num);
+			else if(ballonsChips== CHIPS)
+			{
+				number= hashVariables.get(n);
+				world.pickChips(number);
 			}
 		}
 	}
@@ -377,36 +399,42 @@ public class Interpreter
 	 * @param n cuanto se mueve 
 	 * @param direction si se mueve hacia el FRONT, BACK. RIGHT, LEFT
 	 */
-	public void moveToThe(String n, String direction){
-		try{
+	public void moveToThe(String n, String direction)
+	{
+		int number;
+		
+		
+		try
+		{
 
-			int number = Integer.parseInt(n);
-			if(!world.estaArriba() && direction== FRONT ){
+			number = Integer.parseInt(n);
+			if(!world.estaArriba() && direction.equals(FRONT) ){
 				world.moveVertically(number);
 			}
-			else if(!world.estaAbajo() && direction== BACK){
+			else if(!world.estaAbajo() && direction.equals(BACK)){
 				world.moveVertically(-number);
 			}
-			else if(!world.estaDerecha() && direction== RIGHT){
+			else if(!world.estaDerecha() && direction.equals(RIGHT)){
 				world.moveHorizontally(number);
 			}
-			else if(!world.estaIzquierda() && direction== LEFT){
+			else if(!world.estaIzquierda() && direction.equals(LEFT)){
 				world.moveHorizontally(-number);
 			}
 		}
-		catch(Exception e){
-			int num=hashVariables.get(n);
-			if(!world.estaArriba() && direction== FRONT ){
-				world.moveVertically(num);
+		catch(Exception e)
+		{
+			number=hashVariables.get(n);
+			if(!world.estaArriba() && direction.equals(FRONT) ){
+				world.moveVertically(number);
 			}
-			else if(!world.estaAbajo() && direction== BACK){
-				world.moveVertically(-num);
+			else if(!world.estaAbajo() && direction.equals(BACK)){
+				world.moveVertically(-number);
 			}
-			else if(!world.estaDerecha() && direction== RIGHT){
-				world.moveHorizontally(num);
+			else if(!world.estaDerecha() && direction.equals(RIGHT)){
+				world.moveHorizontally(number);
 			}
-			else if(!world.estaIzquierda() && direction== LEFT){
-				world.moveHorizontally(-num);
+			else if(!world.estaIzquierda() && direction.equals(LEFT)){
+				world.moveHorizontally(-number);
 			}
 		}
 	}
